@@ -10,6 +10,38 @@ import static org.junit.jupiter.api.Assertions.*;
 class AlgorithmsTest {
 
     @Test
+    void distanceVersionMethodsReturnExpectedValues() {
+        EditDistance.RecursiveVersion recursive =
+                new EditDistance.RecursiveVersion();
+        EditDistance.TableVersion table =
+                new EditDistance.TableVersion();
+        EditDistance.TwoRowsVersion twoRows =
+                new EditDistance.TwoRowsVersion();
+
+        assertEquals(3, recursive.distance("kitten", "sitting"));
+        assertEquals(3, table.distance("kitten", "sitting"));
+        assertEquals(3, twoRows.distance("kitten", "sitting"));
+    }
+
+    @Test
+    void searchMethodsReturnPositionLists() {
+        assertEquals(
+                List.of(0, 1, 2, 3),
+                StringSearch.naiveSearch("AAAAA", "AA")
+        );
+
+        assertEquals(
+                List.of(0, 2, 4),
+                StringSearch.kmpSearch("ABABABA", "ABA")
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> StringSearch.naiveSearch("abc", "")
+        );
+    }
+
+    @Test
     void editDistanceReferenceValues() {
         assertDistance("kitten", "sitting", 3);
         assertDistance("flaw", "lawn", 2);

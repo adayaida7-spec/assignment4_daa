@@ -89,6 +89,24 @@ public final class EditDistance {
         return new Result(previous[m], operations);
     }
 
+    public static final class RecursiveVersion {
+        public int distance(String a, String b) {
+            return EditDistance.recursive(a, b).distance();
+        }
+    }
+
+    public static final class TableVersion {
+        public int distance(String a, String b) {
+            return EditDistance.table(a, b).distance();
+        }
+    }
+
+    public static final class TwoRowsVersion {
+        public int distance(String a, String b) {
+            return EditDistance.twoRows(a, b).distance();
+        }
+    }
+
     private static final class Counter {
         private long operations;
     }

@@ -38,16 +38,26 @@ def save_plot(filename, title, x_label, y_label, takeaway):
     plt.savefig(PLOT_DIR / filename, dpi=180)
     plt.close()
 
-for algorithm in ("recursive", "table", "two_rows"):
+
+for algorithm in ("table", "two_rows"):
     data = grouped_median(algorithm, "random", "time_ms")
-    plt.plot(list(data), list(data.values()), marker="o", label=algorithm)
+    plt.plot(list(data), list(data.values()), marker="o",
+             label=f"{algorithm}: random")
+
+data = grouped_median("recursive", "random", "time_ms")
+plt.plot(list(data), list(data.values()), marker="o",
+         label="recursive: random")
+
+data = grouped_median("recursive", "identical", "time_ms")
+plt.plot(list(data), list(data.values()), marker="o",
+         label="recursive: identical")
 
 save_plot(
     "edit_distance_time.png",
     "Edit Distance: median runtime",
     "String length n (characters)",
     "Median runtime (milliseconds)",
-    "Notice how the recursive version grows faster than the dynamic programming versions."
+    "Recursive runtime depends strongly on the input strings."
 )
 
 for algorithm in ("table", "two_rows"):
@@ -62,6 +72,7 @@ save_plot(
     "Both DP versions update the same number of cells; two rows save memory."
 )
 
+
 for algorithm in ("naive", "kmp"):
     for input_type in ("random", "repeated_near_match"):
         data = grouped_median(algorithm, input_type, "operations")
@@ -73,8 +84,10 @@ save_plot(
     "String Search: character comparisons",
     "Text length n (characters)",
     "Character comparisons (count)",
-    "The repeated near-match makes Naive recheck long prefixes; KMP reuses prefix information."
+    "Repeated near-matches make Naive recheck prefixes; KMP reuses LPS information."
 )
+
+
 for algorithm in ("naive", "kmp"):
     data = grouped_median(algorithm, "repeated_near_match", "time_ms")
     plt.plot(list(data), list(data.values()), marker="o", label=algorithm)
@@ -87,7 +100,7 @@ save_plot(
     "String Search: near-match runtime (log-log)",
     "Text length n (characters, log scale)",
     "Median runtime (milliseconds, log scale)",
-    "The logarithmic axes make it easier to compare runtime growth across input sizes."
+    "Logarithmic axes help compare runtime growth across input sizes."
 )
 
 print(f"Charts saved in {PLOT_DIR.resolve()}")

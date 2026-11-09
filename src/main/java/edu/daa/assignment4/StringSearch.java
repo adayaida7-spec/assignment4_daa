@@ -98,6 +98,14 @@ public final class StringSearch {
         return new SearchResult(List.copyOf(positions), comparisons);
     }
 
+    public static List<Integer> naiveSearch(String text, String pattern) {
+        return naive(text, pattern).positions();
+    }
+
+    public static List<Integer> kmpSearch(String text, String pattern) {
+        return kmp(text, pattern).positions();
+    }
+
     private static void checkPattern(String pattern) {
         if (pattern.isEmpty()) {
             throw new IllegalArgumentException("Pattern must not be empty");
